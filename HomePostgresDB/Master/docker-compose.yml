@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres_primary:
+    image: postgres:latest
+    container_name: master_db_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: MasterMan
+      POSTGRES_PASSWORD: HappyPasswordsAreGreat
+      POSTGRES_DB: master_db
+      POSTGRES_REPLICATION_USER: ReplicationUser
+      POSTGRES_REPLICATION_PASSWORD: DoAGoodPassword-MakeYourMomProud
+    ports:
+      - "5432:5432" # Expose primary PostgreSQL server
+    volumes:
+      - /home/pi/postgres/primary:/var/lib/postgresql/data
+      - /home/pi/configs/pg_hba.conf:/var/lib/postgresql/data/pg_hba.conf
+      - /home/pi/configs/postgresql.conf:/var/lib/postgresql/data/postgresql.conf
+    networks:
+      - postgres_network
+
+networks:
+  postgres_network:
+    driver: bridge

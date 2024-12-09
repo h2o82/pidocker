@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  nginx:
+    container_name: nginx-webhost
+    image: nginx:latest
+    restart: unless-stopped
+    ports:
+      - "8880:80"   # Expose HTTP on port 80
+    volumes:
+      - /home/pi/<web files location>:/usr/share/nginx/html:ro # Map your folder as the root, read-only
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80

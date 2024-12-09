@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:latest
+    container_name: mosquitto
+    ports:
+      - "1882:1883"   # MQTT broker port
+      - "9001:9001"   # MQTT WebSocket port (optional)
+    volumes:
+      - /mosquitto/config:/mosquitto/config
+      - /mosquitto/data:/mosquitto/data
+      - /mosquitto/log:/mosquitto/log
+    restart: unless-stopped
+
+  nodered:
+    image: nodered/node-red:latest
+    container_name: nodered
+    ports:
+      - "1880:1880"   # Node-RED editor port
+    depends_on:
+      - mosquitto
+    environment:
+      - TZ=UTC
+    volumes:
+      - node_red_data:/data
+    restart: unless-stopped
+
+volumes:
+  node_red_data:

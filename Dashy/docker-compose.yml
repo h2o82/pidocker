@@ -1,0 +1,19 @@
+services:
+  dashy:
+    image: lissy93/dashy
+    container_name: Dashy
+    volumes:
+      # Map the config file (edit the path to match your host machine)
+      # You may need to set permissions and create the file or get the config from the author to start it.
+      - /home/pi/docker/dashy/conf.yml:/app/user-data/conf.yml
+    ports:
+      - 4000:8080
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    healthcheck:
+      test: ['CMD', 'node', '/app/services/healthcheck']
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s

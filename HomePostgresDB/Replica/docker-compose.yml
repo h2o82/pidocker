@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  postgres_replica:
+    image: postgres:latest
+    container_name: replica_db_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: MasterMan
+      POSTGRES_PASSWORD: WooPasswordsareFun
+      POSTGRES_DB: master_db
+      POSTGRES_REPLICATION_USER: replicationUser
+      POSTGRES_REPLICATION_PASSWORD: Sameasthemasterone
+      POSTGRES_PRIMARY_HOST: <the IP of your master DB>
+      POSTGRES_PRIMARY_PORT: 5432
+    ports:
+      - "5432:5432" # Expose replica PostgreSQL server
+    volumes:
+      - /home/pi/postgres/replica:/var/lib/postgresql/data
+    networks:
+      - postgres_network
+
+networks:
+  postgres_network:
+    driver: bridge
